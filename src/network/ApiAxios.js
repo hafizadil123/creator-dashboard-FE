@@ -16,6 +16,7 @@ instance.interceptors.request.use(async (config) => {
     config.headers.Authorization = (token ? token : '');
     config.headers.ContentType = 'application/json';
     config.headers['Access-Control-Allow-Origin'] = '*';
+    config.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
     return config;
 });
 
