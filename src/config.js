@@ -1,6 +1,6 @@
 const config = {
-    WS_BASE_URL: 'http://localhost:5100/api/',
-    DOMAIN_NAME: 'http://localhost:3000',
+    WS_BASE_URL: 'https://dfefch49ewzyg.cloudfront.net/',
+    DOMAIN_NAME: 'https://master.dfli2d1chdcab.amplifyapp.com/',
     DEMO: true
 }
 
