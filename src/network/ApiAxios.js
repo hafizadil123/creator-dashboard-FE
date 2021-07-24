@@ -15,6 +15,7 @@ instance.interceptors.request.use(async (config) => {
     const token = localStorage.getItem('token');
     config.headers.Authorization = (token ? token : '');
     config.headers.ContentType = 'application/json';
+    config.headers['Access-Control-Allow-Origin'] = '*';
     return config;
 });
 
