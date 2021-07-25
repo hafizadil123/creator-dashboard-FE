@@ -87,7 +87,7 @@ class Icons extends React.Component {
                         >
                           <div>
                             <img style={{height:'30px'}} src= {fb} />
-                            <a href="https://dfefch49ewzyg.cloudfront.net/auth/facebook">Facebook</a>
+                            <a href="http://localhost:5200/auth/facebook">Facebook</a>
                           </div>
                         </button>
                     </Col>
