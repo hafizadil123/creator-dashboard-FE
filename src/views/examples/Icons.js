@@ -22,17 +22,23 @@ import substack from "../../assets/img/icons/common/substack.png";
 import patreon from "../../assets/img/icons/common/patreon.png";
 import stripe from "../../assets/img/icons/common/stripe.png";
 import twitch from "../../assets/img/icons/common/twitch.png";
+import queryString from 'query-string';
+
 
 class Icons extends React.Component {
   state = {};
+
   render() {
+    const location = window.location.search;
+    const parsed = queryString.parse(location);
+    console.log('daaa', parsed);
     return (
       <>
         <Header />
         <Container className=" mt--7" fluid>
           <Row>
             <div className=" col">
-
+              {parsed && parsed.success === "1" && <h3 style={{color: 'green'}}>Social Integration Saved!</h3>}
               <Card className=" shadow">
                 <CardHeader className=" bg-transparent">
                   <h3 className=" mb-0">Integrations</h3>
