@@ -67,7 +67,8 @@ class Icons extends React.Component {
                         >
                           <div>
                             <img style={{height:'30px'}} src= {ig} />
-                            <span>Instagram</span>
+                            <a href="https://dfefch49ewzyg.cloudfront.net/auth/instagram">Instagram</a>
+
                           </div>
                         </button>
                     </Col>
