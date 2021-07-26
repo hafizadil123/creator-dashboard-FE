@@ -2,6 +2,8 @@
 import React from "react";
 // react component that copies the given text inside your clipboard
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import InstagramLogin from 'react-instagram-login';
+
 // reactstrap components
 import {
   Card,
@@ -28,6 +30,9 @@ import queryString from 'query-string';
 class Icons extends React.Component {
   state = {};
 
+  responseInstagram = (response) => {
+    console.log(response);
+  }
   render() {
     const location = window.location.search;
     const parsed = queryString.parse(location);
@@ -68,7 +73,7 @@ class Icons extends React.Component {
                           <div>
                             <img style={{height:'30px'}} src= {ig} />
                             <a href="https://dfefch49ewzyg.cloudfront.net/auth/instagram">Instagram</a>
-
+                           
                           </div>
                         </button>
                     </Col>
