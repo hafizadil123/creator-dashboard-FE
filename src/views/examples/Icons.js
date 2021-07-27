@@ -59,7 +59,7 @@ class Icons extends React.Component {
                         >
                           <div>
                             <img style={{height:'27px'}} src= {yt} />
-                            <span> Youtube </span>
+                            <a href="https://dfefch49ewzyg.cloudfront.net/auth/youtube"> Youtube </a>
                           </div>
                         </button>
                     </Col>
