@@ -15,9 +15,9 @@ import AuthRoutes from "./components/PrivateRoute/AuthRoutes";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/admin" component={AdminLayout} />
-      <Route path="/auth" component={AuthLayout} />
-      {/* <Redirect from="/" to="/auth/login" /> */}
+      <PrivateRoute path="/admin" component={AdminLayout} />
+      <AuthRoutes path="/auth" component={AuthLayout} />
+      <Redirect from="/" to="/auth/login" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
