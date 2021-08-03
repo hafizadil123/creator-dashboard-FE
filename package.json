@@ -1,28 +1,13 @@
 {
-  "name": "argon-dashboard-react",
-  "version": "1.1.0",
-  "description": "React version of Argon Dashboard by Creative Tim",
+  "name": "tiktok-trends",
+  "version": "1.0.0",
+  "description": "Tiktok Trends",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
-  },
   "keywords": [
-    "react",
-    "reactjs",
-    "argon",
-    "argon-react",
-    "dashboard",
-    "dashboard-react",
-    "argon-dashboard",
-    "argon-dashboard-react"
+    "tiktok",
+    "trends"
   ],
-  "author": "Creative Tim",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
-  },
-  "homepage": "https://www.revelecreators.com/",
+  "author": "Revele",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -41,13 +26,16 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.12.1",
-    "axios": "^0.21.0",
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.16.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
+    "html2canvas": "^1.1.4",
+    "jspdf": "^2.3.1",
     "moment": "2.24.0",
     "nouislider": "14.1.1",
-    "query-string": "^7.0.1",
     "react": "16.12.0",
     "react-bootstrap": "^1.4.0",
     "react-chartjs-2": "2.9.0",
@@ -55,14 +43,16 @@
     "react-datetime": "2.16.3",
     "react-dom": "16.12.0",
     "react-facebook-login": "^4.1.1",
+    "react-ga": "^3.3.0",
     "react-google-login": "^5.2.2",
     "react-google-maps": "9.4.5",
-    "react-instagram-login": "^1.4.0",
+    "react-loader-spinner": "^4.0.0",
+    "react-pricing-table": "^0.3.0",
     "react-router": "^5.2.0",
     "react-router-dom": "5.1.2",
     "react-scripts": "^4.0.1",
-    "reactstrap": "8.4.1",
-    "sass": "^1.36.0"
+    "reactjs-popup": "^2.0.5",
+    "reactstrap": "8.4.1"
   },
   "devDependencies": {
     "@types/googlemaps": "3.39.2",

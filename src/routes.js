@@ -1,4 +1,3 @@
-
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
@@ -6,52 +5,42 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Audience from "views/examples/Audience.js";
-import Icons from "./views/examples/Icons.js";
+import Icons from "views/examples/Icons.js";
 import ConfirmEmail from "./views/examples/ConfirmEmail";
 import EditProfile from "./views/examples/EditProfile";
 import UsersTable from "./views/examples/UsersTable";
 import ResetPassword from "./views/examples/ResetPassword";
 import ConfirmPassword from "./views/examples/ConfirmPassword";
 import ResetPasswordSuccess from "./views/examples/ResetPasswordSuccess";
+import TiktokTrends from "views/TiktokTrends.js";
+import TiktokTrendsTable from 'views/TikTokTrendsTable.js'
+import Watchlist from "views/Watchlist.js";
+import Analytics from "views/Analytics.js";
+import Pricing from "views/examples/Pricing";
+import Pay from "views/examples/PopUpPay.js";
 
 var routes = [
   {
     path: "/index",
-    name: "Analytics",
-    icon: "ni ni-tv-2 text-primary",
+    name: "Dashboard",
+    icon: "ni ni-tablet-button text-light",
     component: Index,
     layout: "/admin",
     api: false
   },
   {
-    path: "/icons",
-    name: "Integrations",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin",
-    api: true
-  },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin",
-    api: true
-  },
-  {
-    path: "/audience",
-    name: "Audience",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Audience,
+    path: "/analytics",
+    name: "Analytics",
+    icon: "ni ni-chart-pie-35 text-light",
+    component: Analytics,
     layout: "/admin",
     api: false
   },
   {
-    path: "/tables",
+    path: "/tiktoktrends",
     name: "Trends",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
+    icon: "ni ni-chart-bar-32 text-light",
+    component: TiktokTrendsTable,
     layout: "/admin",
     api: false
   },
@@ -80,27 +69,27 @@ var routes = [
     api: true
   },
   {
-    path: "/edit-profile",
-    name: "Edit Profile",
-    icon: "ni ni-ruler-pencil text-info",
-    component: EditProfile,
-    layout: "/admin",
-    api: true
-  },
-  {
-    path: "/users",
-    name: "Users",
-    icon: "ni ni-folder-17 text-pink",
-    component: UsersTable,
-    layout: "/admin",
-    api: true
-  },
-  {
     path: "/reset-password",
     name: "Reset Password",
     icon: "ni ni-folder-17 text-pink",
     component: ResetPassword,
     layout: "/auth",
+    api: true
+  },
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin",
+    api: true
+  },
+  {
+    path: "/edit-profile",
+    name: "Edit Profile",
+    icon: "ni ni-ruler-pencil text-info",
+    component: EditProfile,
+    layout: "/admin",
     api: true
   },
   {
@@ -118,6 +107,31 @@ var routes = [
     component: ResetPasswordSuccess,
     layout: "/auth",
     api: false
+  },
+  {
+    path: "/pricing",
+    name: "Pricing",
+    icon: "ni ni-ruler-pencil text-light",
+    component: Pricing,
+    layout: "/admin",
+    api: true
+  },
+  {
+    path: "/watchlist",
+    name: "Watchlist",
+    icon: "ni ni-glasses-2 text-dar",
+    component: Watchlist,
+    layout: "/admin",
+    api: false
+  },
+  {
+    path: "/pay",
+    name: "Pay",
+    icon: "ni ni-glasses-2 text-dar",
+    component: Pay,
+    layout: "/admin",
+    api: true
   }
+
 ];
 export default routes;

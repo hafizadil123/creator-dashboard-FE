@@ -22,7 +22,7 @@ class AdminNavbar extends React.Component {
           className="navbar-top navbar-horizontal navbar-dark"
           expand="md"
         >
-          <Container className="px-4">
+          <Container className="px-4 sm-pt-4">
             <NavbarBrand to="/" tag={Link}>
               <img alt="..." src={require("assets/img/brand/argon-react-white.png").default} />
             </NavbarBrand>

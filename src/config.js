@@ -1,7 +1,6 @@
 const config = {
-    WS_BASE_URL__LOCAL: 'https://dfefch49ewzyg.cloudfront.net/api/',
-    WS_BASE_URL: 'http://localhost:5200/api/',
-    DOMAIN_NAME: 'https://www.revelecreators.com/',
+    WS_BASE_URL: 'http://localhost:5100/api/',
+    DOMAIN_NAME: 'http://localhost:443',
     DEMO: true
 }
 

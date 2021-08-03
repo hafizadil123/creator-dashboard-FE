@@ -7,15 +7,18 @@ const clientId =
 function googleLogout() {
   const onSuccess = () => {
     console.log('Logout made successfully');
-    alert('Logout made successfully ✌');
+    window.location="/tiktoktrends";
   };
 
   return (
     <div>
       <GoogleLogout
         clientId={clientId}
-        buttonText="Logout"
+        // buttonText="Logout"
         onLogoutSuccess={onSuccess}
+        render={renderProps => (
+          <a onClick={renderProps.onClick} style={{color : "black", backgroundColor: "transparent", marginLeft: "10px", borderRadius: "20px"}}> Logout ⚡️</a>
+        )}
       ></GoogleLogout>
     </div>
   );

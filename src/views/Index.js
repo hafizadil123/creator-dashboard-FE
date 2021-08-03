@@ -1,4 +1,3 @@
-
 import React from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
@@ -7,6 +6,11 @@ import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
+import TikTokUsername from "./examples/TikTokUsername.js";
+import Watchlist from "views/Watchlist.js";
+import Loader from 'react-loader-spinner';
+import AnalyticsHeader from "components/Headers/AnalyticsHeader.js";
+
 import {
   Button,
   Card,
@@ -15,6 +19,7 @@ import {
   NavItem,
   NavLink,
   Nav,
+  Media,
   Progress,
   Table,
   Container,
@@ -30,18 +35,26 @@ import {
   chartExample2
 } from "variables/charts.js";
 
-import Header from "components/Headers/Header.js";
+import TrendsHeader from "components/Headers/TrendsHeader.js";
+import TiktokTrendsTable from './TikTokTrendsTable.js'
+import Analytics from './Analytics.js'
 
 class Index extends React.Component {
-  constructor(props){
+
+  constructor(props) {
     super(props);
     this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1"
+      loading:true,
+      hashtags: [],
+      musics: [],
+      topMusic: {info: {title: "--"}, musicDesc: ""},
+      topHashtag: {info: {title: "--"}, viewDesc: ""},
+      userObj: JSON.parse(localStorage.getItem("reveleUser")),
+      userID: localStorage.getItem("reveleUserID"),
+      watchedItems: {},
+      stats: {},
+      postStats: []
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
   }
   toggleNavs = (e, index) => {
     e.preventDefault();
@@ -51,281 +64,225 @@ class Index extends React.Component {
         this.state.chartExample1Data === "data1" ? "data2" : "data1"
     });
   };
+
+  onSubmit = () => {
+      this.props.history.push('/login/');
+  }
+
+  async componentDidMount() {
+    try {
+      Promise.all([
+        fetch("http://localhost:5100/api/dashboard/" + this.state.userID),
+        fetch("http://ec2-18-117-197-197.us-east-2.compute.amazonaws.com:8100/discover"),
+        fetch('http://localhost:5100/api/tiktok/myposts/'+ localStorage.getItem('reveleUserID'))
+      ]).then(([res1, res2, res3]) => {
+        return Promise.all([res1.json(), res2.json(), res3.json()])
+     }).then(([res1, res2, res3]) => {
+        this.setState({
+          loading:false,
+          userObj: JSON.parse(localStorage.getItem("reveleUser")),
+          userID: localStorage.getItem("reveleUserID"),
+
+          stats: res1.data.stats,
+          watchedItems: res1.data.watchedItems,
+
+          hashtags: res2.data.hashtags,
+          musics: res2.data.musics,
+          topMusic: res2.data.top_music,
+          topHashtag: res2.data.top_hashtag,
+          postStats: res3.data
+        });
+      });
+    }
+    catch(err) {
+      console.log(err);
+    };
+  }
+
+  copyClicked(text) {
+
+  }
+
+  UserNameView = () => (
+    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <TikTokUsername />
+    </div>)
+
   render() {
-    return (
-      <>
-        <Header />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          <Row>
-            <Col className="mb-5 mb-xl-0" xl="8">
-              <Card >
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h6 className="text-uppercase text-light ls-1 mb-1">
-                        Overview
-                      </h6>
-                      <h2 className="text-white mb-0">Sales value</h2>
+
+    let hashtagItems = this.state.hashtags.slice(0,5).map((tag, index) => {
+      return (
+        <tr key={tag.id}>
+          <td><a href={"https://www." + tag.info.link} target="_blank">{tag.info.title}</a></td>
+          <td>{tag.viewDesc}</td>
+          <td><a onClick={this.copyClicked.bind(this, tag.info.title)}><i className="fas fa-copy"></i></a></td>
+        </tr>
+      );
+
+    });
+
+    let musicItems = this.state.musics.slice(0,5).map((item, index) => {
+      return (
+        <tr key={item.id}>
+          <th scope="row">
+            <Media className="align-items-center">
+              <a className="avatar rounded-circle mr-3"><img alt="" src={item.info.thumbnail} style={{width: "50px", height: "50px"}} /></a>
+              <Media><a href={"https://www." + item.info.link} target="_blank">{item.info.title}</a></Media>
+            </Media>
+          </th>
+          <td>{item.musicDesc}</td>
+          <td>{item.info.description}</td>
+          <td><a onClick={this.copyClicked.bind(this, item.info.title)}><i className="fas fa-copy"></i></a></td>
+        </tr>
+      );
+    });
+
+    let postItems = this.state.postStats.slice(0,5).map((tag, index) => {
+      return (
+          <tr key={tag.id}>
+            <th scope="row" style={{paddingBottom:'3%', paddingTop:'3%'}}>
+              <Media className="align-items-center">
+                <a className="avatar rounded-circle mr-3" href={ tag.videoUrl} target="_blank"><img alt="" src={tag.covers[0].dynamic} style={{borderRadius: '10%'}} /></a>
+              </Media>
+            </th>
+            <td>{tag.caption}</td>
+            <td><a href={ tag.sound[0].playUrl} target="_blank">{tag.sound[0].musicName}</a></td>
+            <td>{tag.shareCount}</td>
+            <td>{tag.likeCount}</td>
+            <td>{tag.playCount}</td>
+            <td>{tag.commentCount}</td>
+
+        </tr>
+        );
+    });
+
+
+    if(this.state.loading){
+      return ( <Loader type="ThreeDots" className="pt-7" style={{display:'flex', justifyContent:'center'}} color="black" height={100} width={100}/> );
+    }  else {
+
+      return (
+        <>
+        <div id="analyticsToPDF">
+            <div className="header"> </div>
+            {!this.state.stats.heart ? <this.UserNameView /> :
+                <div>
+                  <AnalyticsHeader />
+                  <div className="pt-3 pb-3" style={{ paddingLeft: '39px', paddingRight: '39px'}}>
+                    <div className="header pb-3 ">
+                        <Card className="shadow">
+                          <CardHeader className="border-0">
+                          <Row style={{ textAlign: 'center'}}>
+                            <h2 style={{paddingLeft: "20px"}}> Your Post Metrics </h2>
+                            <div className="col text-right" style={{paddingBottom:"2%"}}>
+                              <Button
+                                color="primary"
+                                size="sm"
+                                href="/admin/Analytics"
+                              >
+                                See all
+                              </Button>
+                            </div>
+                          </Row>
+                          <Card className="shadow">
+                            <Table className="align-items-center table-flush" responsive>
+                              <thead className="thead-light">
+                                <tr>
+                                  <th scope="col">Video</th>
+                                  <th scope="col">Caption</th>
+                                  <th scope="col">Sound</th>
+                                  <th scope="col">Shares</th>
+                                  <th scope="col">Likes </th>
+                                  <th scope="col">Views</th>
+                                  <th scope="col">Comments </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              {postItems}
+                              </tbody>
+                            </Table>
+                          </Card>
+                        </CardHeader>
+                        </Card>
                     </div>
-                    <div className="col">
-                      <Nav className="justify-content-end" pills>
-                        <NavItem>
-                          <NavLink
-                            className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 1
-                            })}
-                            href="#pablo"
-                            onClick={e => this.toggleNavs(e, 1)}
-                          >
-                            <span className="d-none d-md-block">Month</span>
-                            <span className="d-md-none">M</span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 2
-                            })}
-                            data-toggle="tab"
-                            href="#pablo"
-                            onClick={e => this.toggleNavs(e, 2)}
-                          >
-                            <span className="d-none d-md-block">Week</span>
-                            <span className="d-md-none">W</span>
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
+                    <div style = {{ display:'flex', flexDirection: 'row'}}>
+                      <Container>
+                        <Row>
+                            <div className="col" >
+                              <Card className="shadow" >
+                                <CardHeader className="border-0">
+                                <Row style = {{justifyContent: 'space-between'}}>
+                                    <h3 className="mb-0">Trending TikTok Hashtags For Today</h3>
+                                    <Button
+                                      color="primary"
+                                      href="admin/Analytics"
+                                      size="sm"
+                                    >
+                                      See all
+                                    </Button>
+                                </Row>
+                                </CardHeader>
+                                <Table className="align-items-center table-flush" responsive style= {{textAlign: 'center'}}>
+                                  <thead className="thead-light">
+                                    <tr>
+                                      <th scope="col">Hashtag</th>
+                                      <th scope="col">Number of Views</th>
+                                      <th scope="col">Copy</th>
+                                      <th scope="col" />
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {hashtagItems}
+                                  </tbody>
+                                </Table>
+                              </Card>
+                          </div>
+                        </Row>
+                        </Container >
+
+                        <Container style = {{ display:'flex', flexDirection: 'row'}}>
+                          <Row>
+                            <div className="col">
+                              <Card className=" shadow">
+                              <CardHeader className="border-0">
+                                <Row style = {{justifyContent: 'space-between'}}>
+                                  <h3 className="mb-0">Trending TikTok Sounds For Today</h3>
+                                  <Button
+                                    color="primary"
+                                    href="admin/Analytics"
+                                    size="sm"
+                                    href="/admin/Analytics"
+                                  >
+                                    See all
+                                  </Button>
+                                </Row>
+                              </CardHeader>
+                              <Table className="align-items-center table-flush" responsive style= {{textAlign: 'center'}}>
+                                <thead className="thead-light">
+                                    <tr>
+                                      <th scope="col">Sound Title</th>
+                                      <th scope="col">Number of Vidoes</th>
+                                      <th scope="col">Artist</th>
+                                      <th scope="col">Copy</th>
+                                      <th scope="col" />
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {musicItems}
+                                  </tbody>
+                                </Table>
+                              </Card>
+                            </div>
+                          </Row>
+                      </Container>
                     </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                  {/* Chart */}
-                  <div className="chart">
-                    <Line
-                      data={chartExample1[this.state.chartExample1Data]}
-                      options={chartExample1.options}
-                      getDatasetAtEvent={e => console.log(e)}
-                    />
                   </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Performance
-                      </h6>
-                      <h2 className="mb-0">Total orders</h2>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                  {/* Chart */}
-                  <div className="chart">
-                    <Bar
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Page visits</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Page name</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col">Unique users</th>
-                      <th scope="col">Bounce rate</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Card>
-            </Col>
-            <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Social traffic</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Referral</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>1,480</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">60%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="60"
-                              barClassName="bg-gradient-danger"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>5,480</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">70%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="70"
-                              barClassName="bg-gradient-success"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Google</th>
-                      <td>4,807</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">80%</span>
-                          <div>
-                            <Progress max="100" value="80" />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Instagram</th>
-                      <td>3,678</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">75%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="75"
-                              barClassName="bg-gradient-info"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">twitter</th>
-                      <td>2,645</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">30%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="30"
-                              barClassName="bg-gradient-warning"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </>
-    );
+                </div>
+           }
+        </div>
+        </>
+      );
+    }
   }
 }
 

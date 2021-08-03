@@ -2,8 +2,6 @@
 import React from "react";
 // react component that copies the given text inside your clipboard
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import InstagramLogin from 'react-instagram-login';
-
 // reactstrap components
 import {
   Card,
@@ -24,26 +22,17 @@ import substack from "../../assets/img/icons/common/substack.png";
 import patreon from "../../assets/img/icons/common/patreon.png";
 import stripe from "../../assets/img/icons/common/stripe.png";
 import twitch from "../../assets/img/icons/common/twitch.png";
-import queryString from 'query-string';
-
 
 class Icons extends React.Component {
   state = {};
-
-  responseInstagram = (response) => {
-    console.log(response);
-  }
   render() {
-    const location = window.location.search;
-    const parsed = queryString.parse(location);
-    console.log('daaa', parsed);
     return (
       <>
         <Header />
         <Container className=" mt--7" fluid>
           <Row>
             <div className=" col">
-              {parsed && parsed.success === "1" && <h3 style={{color: 'green'}}>Social Integration Saved!</h3>}
+
               <Card className=" shadow">
                 <CardHeader className=" bg-transparent">
                   <h3 className=" mb-0">Integrations</h3>
@@ -59,7 +48,7 @@ class Icons extends React.Component {
                         >
                           <div>
                             <img style={{height:'27px'}} src= {yt} />
-                            <a href="https://dfefch49ewzyg.cloudfront.net/auth/youtube"> Youtube </a>
+                            <span> Youtube </span>
                           </div>
                         </button>
                     </Col>
@@ -72,8 +61,7 @@ class Icons extends React.Component {
                         >
                           <div>
                             <img style={{height:'30px'}} src= {ig} />
-                            <a href="https://dfefch49ewzyg.cloudfront.net/auth/instagram">Instagram</a>
-                           
+                            <span>Instagram</span>
                           </div>
                         </button>
                     </Col>
@@ -99,7 +87,7 @@ class Icons extends React.Component {
                         >
                           <div>
                             <img style={{height:'30px'}} src= {fb} />
-                            <a href="https://dfefch49ewzyg.cloudfront.net/auth/facebook">Facebook</a>
+                            <span>Facebook</span>
                           </div>
                         </button>
                     </Col>

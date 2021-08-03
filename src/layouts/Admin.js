@@ -8,14 +8,23 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
+import ReactGA from 'react-ga';
+
 import routes from "routes.js";
 
 class Admin extends React.Component {
+
+  constructor() {
+    super();
+    ReactGA.initialize('G-EL393VK594');
+  }
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
   }
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -43,10 +52,15 @@ class Admin extends React.Component {
     }
     return "Brand";
   };
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   render() {
     return (
       <>
-        <Sidebar
+      <Sidebar
           {...this.props}
           routes={routes}
           logo={{
@@ -57,15 +71,13 @@ class Admin extends React.Component {
         />
         <div className="main-content" ref="mainContent">
           <AdminNavbar
-            {...this.props}
-            brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>
             {this.getRoutes(routes)}
             <Redirect from="*" to="/admin/index" />
           </Switch>
           <Container fluid>
-            <AdminFooter />
+
           </Container>
         </div>
       </>

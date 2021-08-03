@@ -14,7 +14,7 @@ class Footer extends React.Component {
               © 2021{" "}
               <a
                 className="font-weight-bold ml-1"
-                href="http://www.revelecreators.com/"
+                href="http://www.getrevele.com/"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -22,32 +22,32 @@ class Footer extends React.Component {
               </a>
             </div>
           </Col>
-          {/*
+
           <Col xl="6">
             <Nav className="nav-footer justify-content-center justify-content-xl-end">
               <NavItem>
                 <NavLink
-                  href="https://www.creative-tim.com?ref=adr-admin-footer"
+                  href="https://revele.substack.com/"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Creative Tim
+                  Newsletter
                 </NavLink>
               </NavItem>
 
               <NavItem>
                 <NavLink
-                  href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
+                  href="https://discord.gg/sV8JERBM"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  About Us
+                  Discord
                 </NavLink>
               </NavItem>
 
               <NavItem>
                 <NavLink
-                  href="http://blog.creative-tim.com?ref=adr-admin-footer"
+                  href="https://revele.medium.com/"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -57,15 +57,24 @@ class Footer extends React.Component {
 
               <NavItem>
                 <NavLink
-                  href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
+                  href="https://www.termsandconditionsgenerator.com/live.php?token=0VBlbhorXbifg68QRZ9rvuhUvpL3xWaZ"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  MIT License
+                  Terms Of Service 
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  href="https://www.privacypolicygenerator.info/live.php?token=FijO915E0D9sHfK6NMY4MxgfhxEYICdj"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Privacy Policy 
                 </NavLink>
               </NavItem>
             </Nav>
-          </Col> */ }
+          </Col>
         </Row>
       </footer>
     );
